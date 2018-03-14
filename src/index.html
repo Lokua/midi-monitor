@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Launchpad Interceptor</title>
+    <style>
+      *, *:before, *:after {
+        box-sizing: border-box;
+        font-family: 'Fira Code', monospace;
+      }
+      html {
+        height: 100%;
+      }
+      body {
+        height: 100%;
+        padding: 0;
+        margin: 0;
+        font-family: 'Fira Code', monospace;
+        font-size: 1em;
+      }
+      #title-bar {
+        -webkit-app-region: drag;
+        width: 100%;
+        height: 1rem;
+      }
+      #splash {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        justify-content: center;
+        text-align: center;
+      }
+      #root {
+        padding: 0 0.5rem;
+      }
+      p {
+        margin: 0.125rem 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="title-bar"></div>
+    <div id="splash">Loading...</div>
+    <div id="root"></div>
+  </body>
+  <script src="http://localhost:3001/bundle.js"></script>
+</html>
