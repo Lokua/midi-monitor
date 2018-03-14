@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import { without } from 'lodash/fp'
+
 import { connect } from './context'
 import Tabs from './components/Tabs'
 
@@ -39,8 +41,25 @@ export class App extends Component {
     this.updateMidiPorts()
   }
 
+  toggleInputSelected(input) {
+    const { selectedInputs, update, midiMessageHandler } = this.props
+    const had = selectedInputs.includes(input)
+
+    update({
+      selectedInputs: had
+        ? without([input], selectedInputs)
+        : selectedInputs.concat(input)
+    })
+
+    if (!had) {
+      input.addEventListener('midimessage', midiMessageHandler)
+    } else {
+      input.removeEventListener('midimessage', midiMessageHandler)
+    }
+  }
+
   render() {
-    const { inputs, outputs, view } = this.props
+    const { inputs, selectedInputs, view, log } = this.props
     const views = ['ports', 'console']
 
     return (
@@ -54,19 +73,23 @@ export class App extends Component {
         />
         {view === 'ports' && (
           <div>
-            <h2>Inputs</h2>
             {inputs ? (
               <ul>
-                {inputs.map(input => <li key={input.id}>{input.name}</li>)}
-              </ul>
-            ) : (
-              'Loading...'
-            )}
-
-            <h2>Outputs</h2>
-            {outputs ? (
-              <ul>
-                {outputs.map(output => <li key={output.id}>{output.name}</li>)}
+                {inputs.map(input => (
+                  <li
+                    key={input.id}
+                    onClick={() => this.toggleInputSelected(input)}
+                  >
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={selectedInputs.includes(input)}
+                        readOnly
+                      />
+                      {input.name}
+                    </label>
+                  </li>
+                ))}
               </ul>
             ) : (
               'Loading...'
@@ -74,7 +97,13 @@ export class App extends Component {
           </div>
         )}
 
-        {view === 'console' && <h1>Not Implemented</h1>}
+        {view === 'console' && (
+          <div>
+            {log.map((message, index) => (
+              <pre key={index}>{message.toString()}</pre>
+            ))}
+          </div>
+        )}
       </div>
     )
   }

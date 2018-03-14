@@ -11,26 +11,33 @@ export default function createContext(initialState = {}) {
   }
 }
 
-function createProvider(Context, initialState, methods = {}) {
+function createProvider(Context, initialState = {}) {
   return class Provider extends Component {
     constructor(props) {
       super(props)
 
       this.state = {
+        getState: () => this.state,
         update: state =>
           new Promise(resolve => {
             this.setState(state, resolve)
-          }),
+          })
+      }
 
-        ...Object.keys(initialState).reduce((state, key) => {
-          state[key] = initialState[key]
+      Object.keys(initialState).forEach(key => {
+        const value = initialState[key]
+        this.state[key] = value
+        typeof value === 'function' &&
+          (this.state[key] = value.bind(this.state))
+      })
+    }
 
-          if (typeof key === 'function') {
-            state[key] = state[key].bind(this)
-          }
-
-          return state
-        }, {})
+    componentDidUpdate(prevProps, prevState) {
+      if (process.env.NODE_ENV === 'development') {
+        console.group('Provider#componentDidUpdate')
+        console.log('prevState:', prevState)
+        console.log('state:', this.state)
+        console.groupEnd()
       }
     }
 
