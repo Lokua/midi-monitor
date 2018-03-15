@@ -1,65 +1,27 @@
 import React, { Component } from 'react'
-import { without } from 'lodash/fp'
 
 import { connect } from './context'
 import Tabs from './components/Tabs'
+import PortSelector from './PortSelector'
+import Console from './Console'
 
 export class App extends Component {
   static removeSplash() {
-    global.document.body.removeChild(global.document.getElementById('splash'))
+    document.body.removeChild(document.getElementById('splash'))
   }
 
   componentDidMount() {
-    console.info(this)
     App.removeSplash()
-    this.initMidiAccess()
+    this.props.initMidiAccess()
   }
 
-  async initMidiAccess() {
-    await this.props.update({
-      midiAccess: await global.navigator.requestMIDIAccess()
-    })
-
-    this.props.midiAccess.addEventListener(
-      'statechange',
-      this.onMidiAccessStateChange
-    )
-
-    this.updateMidiPorts()
-  }
-
-  updateMidiPorts() {
-    const { update, midiAccess } = this.props
-
-    update({
-      inputs: Array.from(midiAccess.inputs.values()),
-      outputs: Array.from(midiAccess.outputs.values())
-    })
-  }
-
-  onMidiAccessStateChange = () => {
-    this.updateMidiPorts()
-  }
-
-  toggleInputSelected(input) {
-    const { selectedInputs, update, midiMessageHandler } = this.props
-    const had = selectedInputs.includes(input)
-
-    update({
-      selectedInputs: had
-        ? without([input], selectedInputs)
-        : selectedInputs.concat(input)
-    })
-
-    if (!had) {
-      input.addEventListener('midimessage', midiMessageHandler)
-    } else {
-      input.removeEventListener('midimessage', midiMessageHandler)
-    }
+  updateView = (index, view) => {
+    this.props.update({ view })
   }
 
   render() {
-    const { inputs, selectedInputs, view, log } = this.props
+    const { inputs, selectedInputs, view, toggleInputSelected } = this.props
+
     const views = ['ports', 'console']
 
     return (
@@ -67,43 +29,18 @@ export class App extends Component {
         <Tabs
           tabs={views}
           activeIndex={views.indexOf(view)}
-          onClickTab={(index, view) => {
-            this.props.update({ view })
-          }}
+          onClickTab={this.updateView}
         />
+
         {view === 'ports' && (
-          <div>
-            {inputs ? (
-              <ul>
-                {inputs.map(input => (
-                  <li
-                    key={input.id}
-                    onClick={() => this.toggleInputSelected(input)}
-                  >
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={selectedInputs.includes(input)}
-                        readOnly
-                      />
-                      {input.name}
-                    </label>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              'Loading...'
-            )}
-          </div>
+          <PortSelector
+            inputs={inputs}
+            selectedInputs={selectedInputs}
+            onToggle={toggleInputSelected}
+          />
         )}
 
-        {view === 'console' && (
-          <div>
-            {log.map((message, index) => (
-              <pre key={index}>{message.toString()}</pre>
-            ))}
-          </div>
-        )}
+        {view === 'console' && <Console />}
       </div>
     )
   }

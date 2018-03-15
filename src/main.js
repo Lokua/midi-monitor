@@ -8,16 +8,9 @@ const BrowserWindow = electron.BrowserWindow
 let mainWindow
 
 function createWindow() {
-  const width = 512
-  const height = 780
-
   mainWindow = new BrowserWindow({
-    width,
-    minWidth: width,
-    height,
-    minHeight: height,
-    x: 48,
-    y: 16,
+    minWidth: 512,
+    minHeight: 512,
     title: 'Launchpad',
     titleBarStyle: 'hidden'
   })
