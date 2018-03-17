@@ -1,20 +1,21 @@
 import React from 'react'
-import { connect } from './context'
 
-export default connect(['inputs', 'selectedInputs', 'onToggle'])(
-  ({ inputs, selectedInputs, onToggle }) => (
-    <div>
-      {inputs ? (
-        <ul>
-          {inputs.map(input => (
-            <li key={input.id} onClick={() => onToggle(input)}>
-              [{selectedInputs.includes(input) ? 'x' : ' '}]{input.name}
-            </li>
-          ))}
-        </ul>
-      ) : (
-        'Loading...'
-      )}
-    </div>
-  )
+import { connect } from './context'
+import List from './components/List'
+import CheckField from './components/CheckField'
+
+const enhance = connect(['inputs', 'selectedInputs', 'onToggle'])
+
+const PortSelector = ({ inputs, selectedInputs, onToggle }) => (
+  <List>
+    {(inputs || []).map(input => (
+      <List.Item key={input.id} onClick={() => onToggle(input)}>
+        <CheckField value={selectedInputs.includes(input)}>
+          {input.name}
+        </CheckField>
+      </List.Item>
+    ))}
+  </List>
 )
+
+export default enhance(PortSelector)

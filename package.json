@@ -4,35 +4,40 @@
   "description": "Basic MIDI port/message watcher",
   "main": "./src/main.js",
   "scripts": {
-    "start": "electron .",
-    "dev": "./dev.sh",
+    "start": "./dev.sh",
+    "dev": "npm start",
     "dev-server": "node dev-server",
     "nodemon": "nodemon --exec 'electron .'",
     "test": "NODE_ENV=test jest",
     "test:dev": "NODE_ENV=test jest --watch",
-    "flow": "flow",
     "lint": "eslint src",
-    "lint:fix": "eslint --fix src"
+    "lint:fix": "eslint --fix src",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook",
+    "icons": "open ./node_modules/@lokua/mdi-svg/demo/index.html"
   },
   "repository": "https://github.com/Lokua/midi-monitor.git",
-  "keywords": [
-    "midi",
-    "monitor"
-  ],
-  "author": "GitHub",
+  "keywords": ["midi", "monitor"],
+  "author": "Joshua Kleckner <dev@lokua.net> (https://lokua.net)",
   "license": "CC0-1.0",
   "devDependencies": {
+    "@storybook/addon-actions": "^3.3.15",
+    "@storybook/addon-links": "^3.3.15",
+    "@storybook/addons": "^3.3.15",
+    "@storybook/react": "^3.3.15",
     "babel": "~6.23.0",
+    "babel-core": "^6.26.0",
     "babel-jest": "~20.0.3",
     "babel-loader": "~7.1.1",
     "babel-plugin-lodash": "~3.2.11",
     "babel-plugin-transform-class-properties": "~6.24.1",
+    "babel-plugin-transform-object-assign": "6.22.0",
     "babel-plugin-transform-object-rest-spread": "~6.23.0",
     "babel-polyfill": "~6.23.0",
     "babel-preset-es2015": "~6.24.1",
     "babel-preset-react": "~6.24.1",
     "concurrently": "~3.5.0",
-    "electron": "~1.6.2",
+    "electron": "1.8.4",
     "eslint": "~4.3.0",
     "eslint-config-lokua": "7.0.0",
     "eslint-config-prettier": "2.7.0",
@@ -41,15 +46,18 @@
     "jest": "~20.0.4",
     "nodemon": "~1.11.0",
     "prettier": "1.8.2",
+    "raw-loader": "0.5.1",
     "webpack": "~3.4.1",
     "webpack-dev-server": "~2.6.1"
   },
   "dependencies": {
-    "glamorous": "~3.25.0",
+    "@lokua/mdi-svg": "2.0.3",
     "lodash": "~4.17.4",
+    "polished": "1.9.2",
     "prop-types": "15.6.1",
     "react": "16.3.0-alpha.1",
     "react-dom": "16.3.0-alpha.1",
-    "react-easy-state": "5.0.0"
+    "styled-ax": "1.1.1",
+    "styled-components": "3.2.3"
   }
 }

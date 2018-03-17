@@ -1,9 +1,34 @@
 import React, { Component } from 'react'
+import styled from 'styled-components'
 
 import { connect } from './context'
-import Tabs from './components/Tabs'
+import ax from './styles'
 import PortSelector from './PortSelector'
 import Console from './Console'
+import ConsoleSettings from './ConsoleSettings'
+
+const Layout = styled.div`
+  display: grid;
+  height: 100%;
+  color: ${ax.color('text')};
+`
+
+const Main = styled.main`
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  overflow: hidden;
+  padding: 1rem;
+
+  > section:first-child {
+    overflow: auto;
+  }
+`
+
+const ConsoleSection = styled.section`
+  display: grid;
+  grid-template-rows: 32px auto;
+  overflow: hidden;
+`
 
 export class App extends Component {
   static removeSplash() {
@@ -20,28 +45,25 @@ export class App extends Component {
   }
 
   render() {
-    const { inputs, selectedInputs, view, toggleInputSelected } = this.props
-
-    const views = ['ports', 'console']
+    const { inputs, selectedInputs, toggleInputSelected } = this.props
 
     return (
-      <div>
-        <Tabs
-          tabs={views}
-          activeIndex={views.indexOf(view)}
-          onClickTab={this.updateView}
-        />
-
-        {view === 'ports' && (
-          <PortSelector
-            inputs={inputs}
-            selectedInputs={selectedInputs}
-            onToggle={toggleInputSelected}
-          />
-        )}
-
-        {view === 'console' && <Console />}
-      </div>
+      <Layout>
+        <Main>
+          <section>
+            <h3>Input Ports</h3>
+            <PortSelector
+              inputs={inputs}
+              selectedInputs={selectedInputs}
+              onToggle={toggleInputSelected}
+            />
+          </section>
+          <ConsoleSection>
+            <ConsoleSettings />
+            <Console />
+          </ConsoleSection>
+        </Main>
+      </Layout>
     )
   }
 }

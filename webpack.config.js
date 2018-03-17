@@ -31,8 +31,12 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /.+\.js$/,
+        test: /\.js$/,
         use: 'babel-loader'
+      },
+      {
+        test: /\.svg$/,
+        use: 'raw-loader'
       }
     ]
   },

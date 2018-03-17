@@ -6,8 +6,12 @@ const init = ({ getState, update }) => ({
   inputs: null,
   selectedInputs: [],
   outputs: null,
-  view: 'ports',
+  views: ['console', 'ports'],
+  view: 'console',
   log: [],
+  consoleSettings: {
+    follow: true
+  },
 
   async initMidiAccess() {
     const midiAccess = await global.navigator.requestMIDIAccess()
@@ -51,6 +55,23 @@ const init = ({ getState, update }) => ({
     had
       ? input.removeEventListener('midimessage', this.midiMessageHandler)
       : input.addEventListener('midimessage', this.midiMessageHandler)
+  },
+
+  clearLog() {
+    update({
+      log: []
+    })
+  },
+
+  toggleFollow() {
+    const { consoleSettings } = getState()
+
+    update({
+      consoleSettings: {
+        ...consoleSettings,
+        follow: !consoleSettings.follow
+      }
+    })
   }
 })
 
