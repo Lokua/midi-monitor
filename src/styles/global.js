@@ -31,14 +31,6 @@ injectGlobal`
     height: ${theme.unit.titleBarHeight};
   }
 
-  #splash {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    justify-content: center;
-    text-align: center;
-  }
-
   #root {
     height: calc(100vh - ${theme.unit.titleBarHeight});
     overflow: hidden;

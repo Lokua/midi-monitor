@@ -1,7 +1,7 @@
 import { invert, lighten } from 'polished'
 
 const text = 'midnightblue'
-const textInverted = lighten(0.2, invert(text))
+const textInverted = lighten(0.25, invert(text))
 const background = textInverted
 const backgroundInverted = text
 

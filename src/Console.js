@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
-import { ellipsis } from 'polished'
+import { capitalize } from 'lodash/fp'
 
 import { connect } from './context'
 import ax from './styles'
@@ -45,11 +45,11 @@ const Table = styled.table`
   }
 `
 
-const enhance = connect(['log', 'consoleSettings'])
+const enhance = connect(['log', 'settings'])
 
 class Console extends Component {
   componentDidUpdate() {
-    if (this.props.consoleSettings.follow) {
+    if (this.props.settings.console.follow) {
       this.scrollToBottomOfTable()
     }
   }
@@ -59,28 +59,26 @@ class Console extends Component {
   }
 
   render() {
-    const { log } = this.props
+    const { log, settings } = this.props
+    const { columns } = settings.console
+    const columnKeys = Object.keys(columns).filter(key => columns[key])
 
     return (
       <Container>
         <Table>
           <thead>
             <tr>
-              <th>Timestamp</th>
-              <th>Port</th>
-              <th>Status</th>
-              <th>Data 1</th>
-              <th>Data 2</th>
+              {columnKeys.map(column => (
+                <th key={column}>{capitalize(column)}</th>
+              ))}
             </tr>
           </thead>
           <tbody ref={node => (this.tableBody = node)}>
-            {log.map(({ input, timestamp, data }, index) => (
+            {log.map((entry, index) => (
               <tr key={index}>
-                <td>{timestamp}</td>
-                <td>{input}</td>
-                <td>{data[0]}</td>
-                <td>{data[1]}</td>
-                <td>{data[2]}</td>
+                {columnKeys.map(column => (
+                  <td key={column}>{entry[column]}</td>
+                ))}
               </tr>
             ))}
           </tbody>

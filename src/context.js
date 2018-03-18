@@ -1,5 +1,6 @@
-import { without } from 'lodash/fp'
+import { prop, without, set } from 'lodash/fp'
 import createContext from './createContext'
+import store from './store'
 
 const init = ({ getState, update }) => ({
   midiAccess: null,
@@ -9,69 +10,151 @@ const init = ({ getState, update }) => ({
   views: ['console', 'ports'],
   view: 'console',
   log: [],
-  consoleSettings: {
-    follow: true
-  },
+  settingsOpen: false,
+
+  settings: store.get('settings', {
+    recallPortSelections: true,
+    portSelectorOpen: true,
+    console: {
+      follow: true,
+      columns: {
+        timestamp: true,
+        port: true,
+        status: true,
+        data1: true,
+        data2: true
+      }
+    }
+  }),
 
   async initMidiAccess() {
     const midiAccess = await global.navigator.requestMIDIAccess()
-
     midiAccess.addEventListener('statechange', this.updateMidiPorts)
 
     await update({ midiAccess })
-    this.updateMidiPorts()
+
+    await this.updateMidiPorts()
+
+    const selectedPortIds = store.get('selectedPortIds', [])
+    getState()
+      .inputs.filter(input => selectedPortIds.includes(input.id))
+      .forEach(this.toggleInputSelected)
   },
 
   updateMidiPorts() {
     const { midiAccess } = getState()
+    const inputs = Array.from(midiAccess.inputs.values())
+    const outputs = Array.from(midiAccess.outputs.values())
 
-    update({
-      inputs: Array.from(midiAccess.inputs.values()),
-      outputs: Array.from(midiAccess.outputs.values())
+    return update({
+      inputs,
+      outputs
     })
   },
 
   midiMessageHandler(e) {
     const { log } = getState()
+    const [status, data1, data2] = e.data
 
-    update({
+    return update({
       log: [
         ...log,
-        { input: e.currentTarget.name, data: e.data, timestamp: Date.now() }
+        {
+          timestamp: Date.now(),
+          port: e.currentTarget.name,
+          status,
+          data1,
+          data2
+        }
       ]
     })
   },
 
   toggleInputSelected(input) {
-    const { selectedInputs } = getState()
+    const { selectedInputs, settings } = getState()
     const had = selectedInputs.includes(input)
 
-    update({
+    if (had) {
+      input.removeEventListener('midimessage', this.midiMessageHandler)
+    } else {
+      input.addEventListener('midimessage', this.midiMessageHandler)
+    }
+
+    return update({
       selectedInputs: had
         ? without([input], selectedInputs)
         : selectedInputs.concat(input)
+    }).then(() => {
+      if (settings.recallPortSelections) {
+        this.updateStoreSelectedPortIds()
+      }
     })
-
-    had
-      ? input.removeEventListener('midimessage', this.midiMessageHandler)
-      : input.addEventListener('midimessage', this.midiMessageHandler)
   },
 
   clearLog() {
-    update({
+    return update({
       log: []
     })
   },
 
   toggleFollow() {
-    const { consoleSettings } = getState()
+    const { settings } = getState()
 
-    update({
-      consoleSettings: {
-        ...consoleSettings,
-        follow: !consoleSettings.follow
-      }
+    return update({
+      settings: set('console.follow', !settings.console.follow, settings)
     })
+  },
+
+  togglePortSelectorOpen() {
+    const { settings } = getState()
+
+    return update({
+      settings: set('portSelectorOpen', !settings.portSelectorOpen, settings)
+    }).then(this.updateStoreSettings)
+  },
+
+  toggleSettingsOpen() {
+    const { settingsOpen } = getState()
+
+    return update({
+      settingsOpen: !settingsOpen
+    })
+  },
+
+  toggleColumnEnabled(column) {
+    const { settings } = getState()
+
+    return update({
+      settings: set(
+        `console.columns.${column}`,
+        !settings.console.columns[column],
+        settings
+      )
+    }).then(this.updateStoreSettings)
+  },
+
+  toggleRecallPortSelections() {
+    const { settings } = getState()
+
+    return update({
+      settings: set(
+        'recallPortSelections',
+        !settings.recallPortSelections,
+        settings
+      )
+    }).then(this.updateStoreSettings)
+  },
+
+  updateStoreSettings() {
+    store.set('settings', getState().settings)
+  },
+
+  updateStoreSelectedPortIds() {
+    store.set('selectedPortIds', getState().selectedInputs.map(prop('id')))
+  },
+
+  openStore() {
+    store.openInEditor()
   }
 })
 
