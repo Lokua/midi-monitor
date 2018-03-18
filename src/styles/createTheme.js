@@ -9,7 +9,6 @@ palettes.set('Cyan', makeTheme('cyan'))
 palettes.set('Yellow', makeTheme('yellow'))
 palettes.set('Magenta', makeTheme('magenta'))
 palettes.set('Dodger', makeTheme('dodgerblue', mix(0.95, '#222', 'dodgerblue')))
-palettes.set('Hot Mess', makeTheme('hotpink', mix(0.95, '#222', 'hotpink')))
 
 export default function createTheme(palette) {
   const createColors = palettes.get(palette) || palettes.get(defaultPalette)
