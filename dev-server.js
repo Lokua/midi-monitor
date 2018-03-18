@@ -1,8 +1,8 @@
-const webpack = require(`webpack`)
-const WebpackDevServer = require(`webpack-dev-server`)
-const config = require(`./webpack.config`)
+const webpack = require('webpack')
+const WebpackDevServer = require('webpack-dev-server')
+const config = require('./webpack.config')
 
-const [host, port] = [`0.0.0.0`, 3001]
+const [host, port] = ['0.0.0.0', 3006]
 const url = `http://${host}:${port}`
 
 new WebpackDevServer(webpack(config), {

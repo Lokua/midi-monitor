@@ -1,5 +1,7 @@
 import { injectGlobal } from 'styled-components'
-import theme from './theme'
+import createTheme from './theme'
+
+const theme = createTheme()
 
 injectGlobal`
   @import url('https://fonts.googleapis.com/css?family=Roboto+Mono:400,500,700|Roboto:400,500,700');

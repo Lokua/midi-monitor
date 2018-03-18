@@ -1,6 +1,26 @@
-import { prop, without, set } from 'lodash/fp'
-import createContext from './createContext'
+import { prop, merge, without, set } from 'lodash/fp'
+import midiUtil from '@lokua/midi-util'
+
+import createContext from './framework/createContext'
+import { theme } from './styles'
 import store from './store'
+
+const defaultSettings = {
+  recallPortSelections: true,
+  portSelectorOpen: true,
+  console: {
+    follow: true,
+    columns: {
+      timestamp: true,
+      port: true,
+      channel: true,
+      type: true,
+      status: true,
+      data1: true,
+      data2: true
+    }
+  }
+}
 
 const init = ({ getState, update }) => ({
   midiAccess: null,
@@ -11,31 +31,20 @@ const init = ({ getState, update }) => ({
   view: 'console',
   log: [],
   settingsOpen: false,
-
-  settings: store.get('settings', {
-    recallPortSelections: true,
-    portSelectorOpen: true,
-    console: {
-      follow: true,
-      columns: {
-        timestamp: true,
-        port: true,
-        status: true,
-        data1: true,
-        data2: true
-      }
-    }
-  }),
+  settings: merge(defaultSettings, store.get('settings', {})),
+  theme: theme(),
 
   async initMidiAccess() {
     const midiAccess = await global.navigator.requestMIDIAccess()
     midiAccess.addEventListener('statechange', this.updateMidiPorts)
-
     await update({ midiAccess })
-
     await this.updateMidiPorts()
+    this.initPortsFromStore()
+  },
 
+  initPortsFromStore() {
     const selectedPortIds = store.get('selectedPortIds', [])
+
     getState()
       .inputs.filter(input => selectedPortIds.includes(input.id))
       .forEach(this.toggleInputSelected)
@@ -53,15 +62,22 @@ const init = ({ getState, update }) => ({
   },
 
   midiMessageHandler(e) {
+    this.appendLogMessage(e.currentTarget.name, e.data)
+  },
+
+  appendLogMessage(port, [status, data1, data2]) {
     const { log } = getState()
-    const [status, data1, data2] = e.data
+    const channel = midiUtil.getChannel(status)
+    const type = midiUtil.getType(status)
 
     return update({
       log: [
         ...log,
         {
           timestamp: Date.now(),
-          port: e.currentTarget.name,
+          port,
+          channel,
+          type,
           status,
           data1,
           data2
@@ -70,25 +86,22 @@ const init = ({ getState, update }) => ({
     })
   },
 
-  toggleInputSelected(input) {
+  async toggleInputSelected(input) {
     const { selectedInputs, settings } = getState()
+
     const had = selectedInputs.includes(input)
+    const method = had ? 'removeEventListener' : 'addEventListener'
+    input[method]('midimessage', this.midiMessageHandler)
 
-    if (had) {
-      input.removeEventListener('midimessage', this.midiMessageHandler)
-    } else {
-      input.addEventListener('midimessage', this.midiMessageHandler)
-    }
-
-    return update({
+    await update({
       selectedInputs: had
         ? without([input], selectedInputs)
         : selectedInputs.concat(input)
-    }).then(() => {
-      if (settings.recallPortSelections) {
-        this.updateStoreSelectedPortIds()
-      }
     })
+
+    if (settings.recallPortSelections) {
+      this.updateStoreSelectedPortIds()
+    }
   },
 
   clearLog() {
@@ -143,6 +156,14 @@ const init = ({ getState, update }) => ({
         settings
       )
     }).then(this.updateStoreSettings)
+  },
+
+  updateThemeColor(color) {
+    const nextTheme = theme(color)
+    console.info('theme:', nextTheme)
+    update({
+      theme: nextTheme
+    }).then(() => console.info('getState():', getState()))
   },
 
   updateStoreSettings() {

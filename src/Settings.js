@@ -22,13 +22,17 @@ const Container = styled.div`
 const enhance = connect([
   'settings',
   'toggleColumnEnabled',
-  'toggleRecallPortSelections'
+  'toggleRecallPortSelections',
+  'updateThemeColor',
+  'theme'
 ])
 
 const Settings = ({
   settings,
   toggleColumnEnabled,
-  toggleRecallPortSelections
+  toggleRecallPortSelections,
+  updateThemeColor,
+  theme
 }) => (
   <Container>
     <section>
@@ -39,6 +43,15 @@ const Settings = ({
       >
         Recall port selections
       </CheckField>
+      <label>Theme</label>
+      <select
+        value={theme.color.text}
+        onChange={e => updateThemeColor(e.currentTarget.value)}
+      >
+        <option value="midnightblue">midinightblue</option>
+        <option value="darkmagenta">darkmagenta</option>
+        <option value="mediumvioletred">mediumvioletred</option>
+      </select>
     </section>
     <section>
       <h4>Columns</h4>

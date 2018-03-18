@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import { capitalize } from 'lodash/fp'
+import { transparentize } from 'polished'
 
 import { connect } from './context'
 import ax from './styles'
 
 const Container = styled.div`
   position: relative;
+  height: 100%;
   overflow: hidden;
   border: 1px solid ${ax.color('textInverted')};
   background-color: ${ax.color('backgroundInverted')};
@@ -29,9 +31,13 @@ const Table = styled.table`
     border-bottom: 1px solid ${ax.color('background')};
   }
 
+  tr {
+    border-bottom: 1px solid ${ax.color('background')(transparentize(0.75))};
+  }
+
   th,
   td {
-    text-align: left;
+    text-align: center;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -40,7 +46,7 @@ const Table = styled.table`
 
   tbody {
     display: block;
-    height: 100%;
+    height: calc(100% - 7.25rem);
     overflow: auto;
   }
 `
@@ -56,6 +62,23 @@ class Console extends Component {
 
   scrollToBottomOfTable() {
     this.tableBody.scrollTop = this.tableBody.scrollHeight
+  }
+
+  humanReadableType(type) {
+    return type
+      .split(/([A-Z].+)/)
+      .filter(Boolean)
+      .map(s => ` ${capitalize(s)}`)
+      .join('')
+      .slice(1)
+  }
+
+  getValue(column, value) {
+    if (column === 'type') {
+      return this.humanReadableType(value)
+    }
+
+    return value
   }
 
   render() {
@@ -77,7 +100,7 @@ class Console extends Component {
             {log.map((entry, index) => (
               <tr key={index}>
                 {columnKeys.map(column => (
-                  <td key={column}>{entry[column]}</td>
+                  <td key={column}>{this.getValue(column, entry[column])}</td>
                 ))}
               </tr>
             ))}

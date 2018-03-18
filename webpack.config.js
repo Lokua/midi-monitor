@@ -11,7 +11,7 @@ module.exports = {
   devtool: 'source-map',
   entry: {
     bundle: [
-      'webpack-dev-server/client?http://localhost:3001',
+      'webpack-dev-server/client?http://localhost:3006',
       'webpack/hot/dev-server',
       './src/renderer.js'
     ]
@@ -19,7 +19,7 @@ module.exports = {
   output: {
     filename: '[name].js',
     path: path.resolve(__dirname, 'build'),
-    publicPath: 'http://localhost:3001'
+    publicPath: 'http://localhost:3006'
   },
   plugins: [
     new webpack.ExternalsPlugin('commonjs', ['electron', 'fs']),

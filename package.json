@@ -17,7 +17,10 @@
     "icons": "open ./node_modules/@lokua/mdi-svg/demo/index.html"
   },
   "repository": "https://github.com/Lokua/midi-monitor.git",
-  "keywords": ["midi", "monitor"],
+  "keywords": [
+    "midi",
+    "monitor"
+  ],
   "author": "Joshua Kleckner <dev@lokua.net> (https://lokua.net)",
   "license": "CC0-1.0",
   "devDependencies": {
@@ -52,6 +55,7 @@
   },
   "dependencies": {
     "@lokua/mdi-svg": "2.0.3",
+    "@lokua/midi-util": "0.3.0",
     "electron-store": "1.3.0",
     "is-electron": "2.1.0",
     "lodash": "~4.17.4",

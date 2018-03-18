@@ -10,27 +10,30 @@ import ConsoleSettings from './ConsoleSettings'
 import Settings from './Settings'
 
 const Layout = styled.div`
-  display: grid;
   height: 100%;
   color: ${ax.color('text')};
 `
 
 const Main = styled.main`
-  display: grid;
-  grid-template-columns: ${p => (p.portSelectorOpen ? '1fr 3fr' : '100%')};
+  display: flex;
+  height: 100%;
   overflow: hidden;
   padding: 1rem;
+`
 
-  > section:first-child {
-    display: flex;
-    flex-direction: column;
-    overflow: auto;
-  }
+const PortsSection = styled.section`
+  display: flex;
+  flex-direction: column;
+  width: ${p => (p.show ? '25%' : '0% !important')};
+  max-width: 250px;
+  min-width: ${p => (p.show ? '200px' : 0)};
+  overflow: auto;
+  visibility: ${p => (p.show ? 'visible' : 'hidden')};
 `
 
 const ConsoleSection = styled.section`
-  display: grid;
-  grid-template-rows: 32px auto;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
 `
 
@@ -62,21 +65,19 @@ export class App extends Component {
     return (
       <Layout>
         <Main portSelectorOpen={settings.portSelectorOpen}>
-          {settings.portSelectorOpen && (
-            <section>
-              <h3>Input Ports</h3>
-              <PortSelector
-                inputs={inputs}
-                selectedInputs={selectedInputs}
-                onToggle={toggleInputSelected}
-              />
-              {process.env.NODE_ENV === 'development' && (
-                <div onClick={openStore} style={{ marginTop: 'auto' }}>
-                  config.json
-                </div>
-              )}
-            </section>
-          )}
+          <PortsSection show={settings.portSelectorOpen}>
+            <h3>Input Ports</h3>
+            <PortSelector
+              inputs={inputs}
+              selectedInputs={selectedInputs}
+              onToggle={toggleInputSelected}
+            />
+            {process.env.NODE_ENV === 'development' && (
+              <div onClick={openStore} style={{ marginTop: 'auto' }}>
+                config.json
+              </div>
+            )}
+          </PortsSection>
           <ConsoleSection>
             <ConsoleSettings />
             <Console />
