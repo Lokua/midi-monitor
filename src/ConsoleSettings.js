@@ -41,13 +41,7 @@ const ConsoleSettings = ({
 }) => (
   <Container>
     <section>
-      <Icon
-        name="input"
-        onClick={togglePortSelectorOpen}
-        style={{
-          transform: `rotate(${settings.portSelectorOpen ? 180 : 0}deg)`
-        }}
-      />
+      <Icon name="midi" onClick={togglePortSelectorOpen} />
       <Icon name="settings" onClick={toggleSettingsOpen} />
     </section>
     <section>

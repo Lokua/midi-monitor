@@ -1,18 +1,53 @@
 import React, { Component } from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { capitalize } from 'lodash/fp'
-import { transparentize } from 'polished'
+import { getLuminance, transparentize } from 'polished'
 
 import { connect } from './context'
 import ax from './styles'
 
+function handleColorProps(props) {
+  const luminance = getLuminance(props.theme.color.background)
+
+  if (luminance < 0.5) {
+    return css`
+      border: 1px solid ${ax.color('text')(transparentize(0.75))};
+      background-color: ${ax.color('background')};
+      color: ${ax.color('text')};
+
+      thead {
+        border-bottom-color: ${ax.color('backgroundInverted')};
+      }
+
+      tr {
+        border-bottom-color: ${ax.color('backgroundInverted')(
+          transparentize(0.75)
+        )};
+      }
+    `
+  }
+
+  return css`
+    border: 1px solid ${ax.color('textInverted')};
+    background-color: ${ax.color('backgroundInverted')};
+    color: ${ax.color('textInverted')};
+
+    thead {
+      border-bottom-color: ${ax.color('background')};
+    }
+
+    tr {
+      border-bottom-color: ${ax.color('background')(transparentize(0.75))};
+    }
+  `
+}
+
 const Container = styled.div`
   position: relative;
-  height: 100%;
+  height: calc(100% - 4rem);
   overflow: hidden;
-  border: 1px solid ${ax.color('textInverted')};
-  background-color: ${ax.color('backgroundInverted')};
-  color: ${ax.color('textInverted')};
+  margin-top: 0.75rem;
+  ${handleColorProps};
 `
 
 const Table = styled.table`
@@ -27,12 +62,10 @@ const Table = styled.table`
     table-layout: fixed;
   }
 
-  thead {
-    border-bottom: 1px solid ${ax.color('background')};
-  }
-
+  thead,
   tr {
-    border-bottom: 1px solid ${ax.color('background')(transparentize(0.75))};
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
   }
 
   th,
@@ -46,7 +79,7 @@ const Table = styled.table`
 
   tbody {
     display: block;
-    height: calc(100% - 7.25rem);
+    height: calc(100% - (4rem - 2px));
     overflow: auto;
   }
 `

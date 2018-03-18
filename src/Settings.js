@@ -3,8 +3,9 @@ import styled from 'styled-components'
 import { capitalize } from 'lodash/fp'
 
 import { connect } from './context'
-import ax from './styles'
+import ax, { palettes } from './styles'
 import CheckField from './components/CheckField'
+import Select from './components/Select'
 
 const Container = styled.div`
   color: ${ax.color('text')};
@@ -23,16 +24,17 @@ const enhance = connect([
   'settings',
   'toggleColumnEnabled',
   'toggleRecallPortSelections',
-  'updateThemeColor',
-  'theme'
+  'updateTheme',
+  'theme',
+  'palette'
 ])
 
 const Settings = ({
   settings,
   toggleColumnEnabled,
   toggleRecallPortSelections,
-  updateThemeColor,
-  theme
+  updateTheme,
+  palette
 }) => (
   <Container>
     <section>
@@ -43,15 +45,19 @@ const Settings = ({
       >
         Recall port selections
       </CheckField>
+      <br />
       <label>Theme</label>
-      <select
-        value={theme.color.text}
-        onChange={e => updateThemeColor(e.currentTarget.value)}
+      <Select
+        value={palette}
+        onChange={e => updateTheme(e.currentTarget.value)}
+        style={{ width: '212px' }}
       >
-        <option value="midnightblue">midinightblue</option>
-        <option value="darkmagenta">darkmagenta</option>
-        <option value="mediumvioletred">mediumvioletred</option>
-      </select>
+        {Array.from(palettes.keys()).map(color => (
+          <option key={color} value={color}>
+            {color}
+          </option>
+        ))}
+      </Select>
     </section>
     <section>
       <h4>Columns</h4>

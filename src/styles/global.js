@@ -1,7 +1,6 @@
 import { injectGlobal } from 'styled-components'
-import createTheme from './theme'
 
-const theme = createTheme()
+const titleBarHeight = '16px'
 
 injectGlobal`
   @import url('https://fonts.googleapis.com/css?family=Roboto+Mono:400,500,700|Roboto:400,500,700');
@@ -24,17 +23,16 @@ injectGlobal`
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
     line-height: 24px;
-    background-color: ${theme.color.background};
   }
 
   #title-bar {
     -webkit-app-region: drag;
     width: 100%;
-    height: ${theme.unit.titleBarHeight};
+    height: ${titleBarHeight};
   }
 
   #root {
-    height: calc(100vh - ${theme.unit.titleBarHeight});
+    height: calc(100vh - ${titleBarHeight});
     overflow: hidden;
   }
   

@@ -14,7 +14,7 @@ export const Container = styled.div`
 
   label {
     display: block;
-    margin-bottom: -1px;
+    margin-bottom: -3px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

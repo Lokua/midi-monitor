@@ -1,4 +1,4 @@
 import styledAx from 'styled-ax'
-import theme from './theme'
+import createTheme from './createTheme'
 
-export default styledAx(theme())
+export default styledAx(createTheme())

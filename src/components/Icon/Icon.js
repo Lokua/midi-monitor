@@ -6,8 +6,8 @@ import checkBoxOutlineBlank from '@lokua/mdi-svg/svg/checkBoxOutlineBlank.svg'
 import close from '@lokua/mdi-svg/svg/close.svg'
 import input from '@lokua/mdi-svg/svg/input.svg'
 import settings from '@lokua/mdi-svg/svg/settings.svg'
-import verticalAlignBottom from '@lokua/mdi-svg/svg/verticalAlignBottom.svg'
-import ax from '../styles'
+import midi from './midi.svg'
+import ax from '../../styles'
 
 const svgs = {
   checkBox,
@@ -15,7 +15,7 @@ const svgs = {
   close,
   input,
   settings,
-  verticalAlignBottom
+  midi
 }
 
 const Container = styled.div`

@@ -12,6 +12,7 @@ import Settings from './Settings'
 const Layout = styled.div`
   height: 100%;
   color: ${ax.color('text')};
+  background-color: ${ax.color('background')};
 `
 
 const Main = styled.main`
@@ -45,6 +46,20 @@ export class App extends Component {
   componentDidMount() {
     App.removeSplash()
     this.props.initMidiAccess()
+    this.updateTitleBarBackgroundColor(this.props.theme)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (
+      this.props.theme.color.background !== nextProps.theme.color.background
+    ) {
+      this.updateTitleBarBackgroundColor(nextProps.theme)
+    }
+  }
+
+  updateTitleBarBackgroundColor(theme) {
+    document.getElementById('title-bar').style.backgroundColor =
+      theme.color.background
   }
 
   updateView = (index, view) => {

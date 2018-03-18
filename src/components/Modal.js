@@ -1,46 +1,43 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
+
+import ax from '../styles'
 import Icon from './Icon'
 
-// NOTE: styles in js form because they were copied from lokua.net.next
-
 const Dialog = styled.dialog`
-  ${{
-    zIndex: 1,
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    padding: '3rem',
-    border: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)'
-  }};
+  z-index: 1;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 3rem;
+  border: 0;
+  background-color: rgba(0, 0, 0, 0.3);
 `
 
 const ModalDialog = styled.div`
-  ${{
-    zIndex: 2,
-    position: 'relative',
-    top: 0,
-    bottom: 0,
-    width: '100%',
-    height: '100%',
-    padding: '1rem',
-    backgroundColor: 'white'
-  }};
+  z-index: 2;
+  position: relative;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  height: 100%;
+  margin: 0 auto;
+  padding: 1rem;
+  background-color: ${ax.color('background')};
+  border-radius: 2px;
+  box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.5);
 `
 
 const Close = styled(Icon).attrs({ name: 'close' })`
-  ${{
-    position: 'absolute',
-    top: '1rem',
-    right: '4rem',
-    width: '1rem',
-    height: '1rem',
-    cursor: 'pointer'
-  }};
+  position: absolute;
+  top: 1rem;
+  right: 3rem;
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
 `
 
 export default class Modal extends Component {

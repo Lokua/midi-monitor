@@ -42,7 +42,7 @@ function createProvider(Context, createInitialState) {
 
     componentDidUpdate(prevProps, prevState) {
       if (process.env.NODE_ENV === 'development') {
-        console.group('Provider#componentDidUpdate')
+        console.groupCollapsed('Provider#componentDidUpdate')
         console.log('prevState:', prevState)
         console.log('state:', this.state)
         console.groupEnd()

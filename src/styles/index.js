@@ -1,6 +1,6 @@
 import './global'
 import ax from './ax'
-import theme from './theme'
+import createTheme, { palettes } from './createTheme'
 
 export default ax
-export { theme }
+export { createTheme, palettes }
