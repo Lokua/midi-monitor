@@ -4,6 +4,7 @@ const url = require('url')
 
 const { app } = electron
 const BrowserWindow = electron.BrowserWindow
+const isDev = process.env.NODE_ENV === 'development'
 
 let mainWindow
 
@@ -12,7 +13,8 @@ function createWindow() {
     minWidth: 512,
     minHeight: 512,
     title: 'Launchpad',
-    titleBarStyle: 'hidden'
+    titleBarStyle: 'hidden',
+    show: false
   })
 
   mainWindow.loadURL(
@@ -23,9 +25,14 @@ function createWindow() {
     })
   )
 
-  mainWindow.webContents.openDevTools({
-    mode: 'detach'
+  mainWindow.once('ready-to-show', () => {
+    mainWindow.show()
   })
+
+  isDev &&
+    mainWindow.webContents.openDevTools({
+      mode: 'detach'
+    })
 
   mainWindow.on('closed', () => {
     mainWindow = null
