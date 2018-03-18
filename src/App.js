@@ -39,12 +39,7 @@ const ConsoleSection = styled.section`
 `
 
 export class App extends Component {
-  static removeSplash() {
-    document.body.removeChild(document.getElementById('splash'))
-  }
-
   componentDidMount() {
-    App.removeSplash()
     this.props.initMidiAccess()
     this.updateTitleBarBackgroundColor(this.props.theme)
   }
