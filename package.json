@@ -1,5 +1,6 @@
 {
   "name": "@lokua/midi-monitor",
+  "productName": "MIDI Monitor",
   "version": "1.0.0",
   "description": "Basic MIDI port/message watcher",
   "main": "./src/main.js",
