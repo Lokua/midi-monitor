@@ -1,7 +1,7 @@
 {
   "name": "@lokua/midi-monitor",
   "productName": "MIDI Monitor",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Basic MIDI port/message watcher",
   "main": "./src/main.js",
   "scripts": {
@@ -18,10 +18,7 @@
     "icons": "open ./node_modules/@lokua/mdi-svg/demo/index.html"
   },
   "repository": "https://github.com/Lokua/midi-monitor.git",
-  "keywords": [
-    "midi",
-    "monitor"
-  ],
+  "keywords": ["midi", "monitor"],
   "author": "Joshua Kleckner <dev@lokua.net> (https://lokua.net)",
   "license": "CC0-1.0",
   "devDependencies": {
