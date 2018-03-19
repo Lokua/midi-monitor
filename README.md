@@ -1,5 +1,7 @@
 # midi-monitor
 
+[![Build Status](https://travis-ci.org/Lokua/midi-monitor.svg?branch=dev)](https://travis-ci.org/Lokua/midi-monitor)
+
 A basic MIDI input port monitoring desktop app built with
 [Electron](https://github.com/electron/electron) and
 [React](https://github.com/facebook/react).
