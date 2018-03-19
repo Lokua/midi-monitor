@@ -83,6 +83,7 @@ function buildElectronOsx() {
     prune: true,
     name: pkg.productName,
     arch: 'x64',
+    platform: 'darwin',
     appCategoryType: 'public.app-category.music',
     out: paths.releaseBuilds,
     icon: path.join(paths.src, 'resources/mac/midi-1024.png.icns'),
