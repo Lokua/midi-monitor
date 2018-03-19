@@ -5,7 +5,7 @@ import createContext from './framework/createContext'
 import { createTheme } from './styles'
 import store from './store'
 
-const init = ({ getState, update }) => {
+export const init = ({ getState, update }) => {
   const defaultSettings = {
     recallPortSelections: true,
     portSelectorOpen: true,
@@ -31,7 +31,6 @@ const init = ({ getState, update }) => {
     inputs: null,
     selectedInputs: [],
     outputs: null,
-    views: ['console', 'ports'],
     view: 'console',
     log: [],
     settingsOpen: false,
