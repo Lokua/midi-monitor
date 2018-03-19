@@ -13,12 +13,5 @@ Comes with a configurable columns and some funky themes:
 
 <img src="etc/Screen Shot 2018-03-18 at 11.17.26 PM.png" style="width: 512px; height: auto" />
 
-This project is still a WIP - there are no builds available yet, however it is
-still usable in development mode:
-
-```sh
-git clone https://github.com/lokua/midi-monitor.git
-cd midi-monitor
-npm i
-npm start
-```
+Downloads available in the
+[Releases](https://github.com/Lokua/midi-monitor/releases) section
