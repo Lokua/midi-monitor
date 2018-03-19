@@ -14,7 +14,8 @@ function createWindow() {
     minHeight: 512,
     title: 'Launchpad',
     titleBarStyle: 'hidden',
-    show: false
+    show: false,
+    icon: path.join(__dirname, 'resources/png/64x64.png')
   })
 
   mainWindow.loadURL(

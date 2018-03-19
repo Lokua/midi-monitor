@@ -15,7 +15,9 @@
     "lint:fix": "eslint --fix src",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "icons": "open ./node_modules/@lokua/mdi-svg/demo/index.html"
+    "icons": "open ./node_modules/@lokua/mdi-svg/demo/index.html",
+    "build:mac":
+      "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=src/resources/mac/midi-1024.png.icns --prune=true --out=release-builds"
   },
   "repository": "https://github.com/Lokua/midi-monitor.git",
   "keywords": ["midi", "monitor"],
@@ -40,6 +42,7 @@
     "babel-preset-react": "~6.24.1",
     "concurrently": "~3.5.0",
     "electron": "1.8.4",
+    "electron-packager": "11.1.0",
     "eslint": "~4.3.0",
     "eslint-config-lokua": "7.0.0",
     "eslint-config-prettier": "2.7.0",
