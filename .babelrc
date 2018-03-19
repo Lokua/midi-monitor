@@ -1,14 +1,50 @@
 {
-  "presets": ["react"],
-  "plugins": [
-    "transform-object-rest-spread",
-    "transform-class-properties",
-    "lodash"
-  ],
   "env": {
     "test": {
-      "presets": ["es2015", "react"],
+      "presets": [
+        [
+          "env",
+          {
+            "targets": {
+              "browsers": ["chrome >= 59"]
+            }
+          }
+        ],
+        "react"
+      ],
       "plugins": ["transform-object-rest-spread", "transform-class-properties"]
+    },
+    "development": {
+      "presets": [
+        [
+          "env",
+          {
+            "targets": {
+              "browsers": ["chrome >= 59"]
+            }
+          }
+        ],
+        "react"
+      ],
+      "plugins": ["transform-object-rest-spread", "transform-class-properties"]
+    },
+    "production": {
+      "presets": [
+        [
+          "env",
+          {
+            "targets": {
+              "browsers": ["chrome >= 59"]
+            }
+          }
+        ],
+        "react"
+      ],
+      "plugins": [
+        "transform-object-rest-spread",
+        "transform-class-properties",
+        "lodash"
+      ]
     }
   }
 }

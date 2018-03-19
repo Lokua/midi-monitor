@@ -8,5 +8,16 @@
     <div id="title-bar"></div>
     <div id="root"></div>
   </body>
-  <script src="http://localhost:3006/bundle.js"></script>
+
+<script>
+let bundle
+
+if (process.env.NODE_ENV === 'development') {
+  bundle = 'http://localhost:3006/bundle.js'
+} else {
+  bundle = 'bundle.js'
+}
+
+document.write(`<script src="${bundle}"><\/script>`)
+</script>
 </html>

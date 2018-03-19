@@ -3,18 +3,9 @@ const webpack = require('webpack')
 
 module.exports = {
   target: 'electron-renderer',
-  devServer: {
-    hot: true,
-    hotOnly: false,
-    inline: false
-  },
   devtool: 'source-map',
   entry: {
-    bundle: [
-      'webpack-dev-server/client?http://localhost:3006',
-      'webpack/hot/dev-server',
-      './src/renderer.js'
-    ]
+    bundle: ['./src/renderer.js']
   },
   output: {
     filename: '[name].js',
@@ -25,8 +16,7 @@ module.exports = {
     new webpack.ExternalsPlugin('commonjs', ['electron', 'fs']),
     new webpack.DefinePlugin({
       __REACT_DEVTOOLS_GLOBAL_HOOK__: '({ isDisabled: true })'
-    }),
-    new webpack.HotModuleReplacementPlugin()
+    })
   ],
   module: {
     rules: [
