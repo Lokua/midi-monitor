@@ -1,7 +1,7 @@
 {
   "name": "@lokua/midi-monitor",
   "productName": "MIDI Monitor",
-  "version": "0.0.2",
+  "version": "1.0.0-beta",
   "description": "Basic MIDI port/message watcher",
   "main": "./src/main.js",
   "scripts": {
