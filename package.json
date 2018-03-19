@@ -17,13 +17,12 @@
     "build-storybook": "build-storybook",
     "icons": "open ./node_modules/@lokua/mdi-svg/demo/index.html",
     "build:webpack": "webpack -p --config webpack.config.prod",
-    "build:osx": "bash ./build.osx.sh"
+    "build:osx": "bash ./build.osx.sh",
+    "build": "node scripts/build",
+    "electron-debug-build": "NODE_ENV=production electron ."
   },
   "repository": "https://github.com/Lokua/midi-monitor.git",
-  "keywords": [
-    "midi",
-    "monitor"
-  ],
+  "keywords": ["midi", "monitor"],
   "author": "Joshua Kleckner <dev@lokua.net> (https://lokua.net)",
   "license": "CC0-1.0",
   "devDependencies": {
@@ -43,6 +42,7 @@
     "babel-polyfill": "~6.23.0",
     "babel-preset-env": "1.6.1",
     "babel-preset-react": "~6.24.1",
+    "chalk": "2.3.2",
     "concurrently": "~3.5.0",
     "electron": "1.8.4",
     "electron-packager": "11.1.0",
@@ -55,6 +55,7 @@
     "nodemon": "~1.11.0",
     "prettier": "1.8.2",
     "raw-loader": "0.5.1",
+    "rimraf": "2.6.2",
     "webpack": "4.1.1",
     "webpack-cli": "2.0.12",
     "webpack-dev-server": "~2.6.1"

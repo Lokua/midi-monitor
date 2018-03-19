@@ -2,7 +2,7 @@ import { prop, merge, without, set } from 'lodash/fp'
 import midiUtil from '@lokua/midi-util'
 
 import createContext from './framework/createContext'
-import { createTheme } from './styles'
+import { createTheme, defaultPalette } from './styles'
 import store from './store'
 
 export const init = ({ getState, update }) => {
@@ -23,7 +23,7 @@ export const init = ({ getState, update }) => {
     }
   }
 
-  const palette = store.get('palette', 'default')
+  const palette = store.get('palette', defaultPalette)
   const theme = createTheme(palette)
 
   return {

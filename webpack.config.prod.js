@@ -3,7 +3,7 @@ const webpack = require('webpack')
 
 module.exports = {
   target: 'electron-renderer',
-  devtool: 'source-map',
+  // devtool: 'source-map',
   entry: {
     bundle: ['./src/renderer.js']
   },

@@ -1,7 +1,7 @@
 import { mix } from 'polished'
 
 export const palettes = new Map()
-const defaultPalette = 'Light'
+export const defaultPalette = 'Light'
 
 palettes.set('Light', makeTheme('#222', '#dedede'))
 palettes.set('Dark', makeTheme('#dedede'))
