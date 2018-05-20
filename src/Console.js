@@ -114,16 +114,8 @@ class Console extends Component {
     return value
   }
 
-  getLog() {
-    const { log, settings: { console: { filters } } } = this.props
-
-    return log.filter(
-      entry => filters.types[entry.type] && filters.channels[entry.channel]
-    )
-  }
-
   render() {
-    const { settings } = this.props
+    const { log, settings } = this.props
     const { columns } = settings.console
     const columnKeys = Object.keys(columns).filter(key => columns[key])
 
@@ -138,7 +130,7 @@ class Console extends Component {
             </tr>
           </thead>
           <tbody ref={node => (this.tableBody = node)}>
-            {this.getLog().map((entry, index) => (
+            {log.map((entry, index) => (
               <tr key={index}>
                 {columnKeys.map(column => (
                   <td key={column}>{this.getValue(column, entry[column])}</td>
