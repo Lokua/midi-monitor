@@ -8,15 +8,12 @@ import CheckField from './components/CheckField'
 import Select from './components/Select'
 
 const Container = styled.div`
+  height: 100%;
+  overflow: auto;
   color: ${ax.color('text')};
 
-  > section {
-    margin-bottom: 4rem;
-
-    h3,
-    h4 {
-      margin-bottom: 1rem;
-    }
+  section {
+    margin-bottom: 2rem;
   }
 `
 
@@ -26,7 +23,8 @@ const enhance = connect([
   'toggleRecallPortSelections',
   'updateTheme',
   'theme',
-  'palette'
+  'palette',
+  'toggleFilterEnabled'
 ])
 
 const Settings = ({
@@ -34,7 +32,8 @@ const Settings = ({
   toggleColumnEnabled,
   toggleRecallPortSelections,
   updateTheme,
-  palette
+  palette,
+  toggleFilterEnabled
 }) => (
   <Container>
     <section>
@@ -59,18 +58,45 @@ const Settings = ({
         ))}
       </Select>
     </section>
-    <section>
-      <h4>Columns</h4>
-      {Object.keys(settings.console.columns).map(column => (
-        <CheckField
-          key={column}
-          value={settings.console.columns[column]}
-          onClick={() => toggleColumnEnabled(column)}
-        >
-          {capitalize(column)}
-        </CheckField>
-      ))}
-    </section>
+    <div>
+      <h3>Filters</h3>
+      <section>
+        <h4>Columns</h4>
+        {Object.keys(settings.console.columns).map(column => (
+          <CheckField
+            key={column}
+            value={settings.console.columns[column]}
+            onClick={() => toggleColumnEnabled(column)}
+          >
+            {capitalize(column)}
+          </CheckField>
+        ))}
+      </section>
+      <section>
+        <h4>Types</h4>
+        {Object.keys(settings.console.filters.types).map(filter => (
+          <CheckField
+            key={filter}
+            value={settings.console.filters.types[filter]}
+            onClick={() => toggleFilterEnabled('types', filter)}
+          >
+            {filter}
+          </CheckField>
+        ))}
+      </section>
+      <section>
+        <h4>Channels</h4>
+        {settings.console.filters.channels.map((value, index) => (
+          <CheckField
+            key={index}
+            value={value}
+            onClick={() => toggleFilterEnabled('channels', index)}
+          >
+            {parseInt(index, 10) + 1}
+          </CheckField>
+        ))}
+      </section>
+    </div>
   </Container>
 )
 

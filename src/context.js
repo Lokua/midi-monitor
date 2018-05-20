@@ -11,6 +11,7 @@ export const init = ({ getState, update }) => {
     portSelectorOpen: true,
     console: {
       follow: true,
+      buffer: 100,
       columns: {
         timestamp: true,
         port: true,
@@ -19,6 +20,21 @@ export const init = ({ getState, update }) => {
         status: true,
         data1: true,
         data2: true
+      },
+      filters: {
+        types: {
+          noteOn: true,
+          noteOff: true,
+          pitchBend: true,
+          controlChange: true,
+          channelPressure: true,
+          clock: false,
+          start: true,
+          stop: true,
+          continue: true,
+          songPosition: false
+        },
+        channels: Array(16).fill(true)
       }
     }
   }
@@ -69,24 +85,31 @@ export const init = ({ getState, update }) => {
     },
 
     appendLogMessage(port, [status, data1, data2]) {
-      const { log } = getState()
+      const { log, settings } = getState()
       const channel = midiUtil.getChannel(status)
       const type = midiUtil.getType(status)
 
-      return update({
-        log: [
-          ...log,
-          {
-            timestamp: Date.now(),
-            port,
-            channel,
-            type,
-            status,
-            data1,
-            data2
-          }
-        ]
-      })
+      if (
+        settings.console.filters.types[type] &&
+        settings.console.filters.channels[channel]
+      ) {
+        return update({
+          log: [
+            ...(log.length === settings.console.buffer ? [] : log),
+            {
+              timestamp: Date.now(),
+              port,
+              channel,
+              type,
+              status,
+              data1,
+              data2
+            }
+          ]
+        })
+      }
+
+      return Promise.resolve()
     },
 
     async toggleInputSelected(input) {
@@ -135,6 +158,18 @@ export const init = ({ getState, update }) => {
       return update({
         settingsOpen: !settingsOpen
       })
+    },
+
+    toggleFilterEnabled(type, filter) {
+      const { settings } = getState()
+
+      return update({
+        settings: set(
+          `console.filters.${type}.${filter}`,
+          !settings.console.filters[type][filter],
+          settings
+        )
+      }).then(this.updateStoreSettings)
     },
 
     toggleColumnEnabled(column) {
