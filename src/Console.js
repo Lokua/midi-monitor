@@ -109,6 +109,8 @@ class Console extends Component {
   getValue(column, value) {
     if (column === 'type') {
       return this.humanReadableType(value)
+    } else if (column === 'channel') {
+      return parseInt(value, 10) + 1
     }
 
     return value
